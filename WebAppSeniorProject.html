@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.css"/>
+	<link rel="stylesheet" href="seniorProj.css" />
+	<script src="seniorProjJS.js"></script>
+    <title>You're In It</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <div id="map"></div>
+   <script>
+    var map, service; 
+	 var infoWindow;
+	 var parser;
+	 
+	 
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat:42.345343 , lng: -71.096670},
+          zoom: 18
+        });
+
+
+		// Try HTML5 geolocation.
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+			
+
+            //position the map to users location
+            map.setCenter(pos);
+			createMarkers(pos.lat, pos.lng);
+          }, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+			
+          });
+        } else {
+          // Browser doesn't support Geolocation
+          handleLocationError(false, infoWindow, map.getCenter());
+        }
+      }
+	  
+	  
+	  //create markers using nearby search
+	  function createMarkers(lat, lng){
+	  
+		var service = new google.maps.places.PlacesService(map);
+			service.nearbySearch({
+			location: {lat, lng},
+			radius: 500,
+			type: ['store']
+			}, callback);
+      }
+		
+
+      function callback(results, status) {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+          for (var i = 0; i < results.length; i++) {
+            createMarker(results[i]);
+          }
+        }
+      }
+
+	  //create a marker used in callback
+      function createMarker(place) {
+		
+        var placeLoc = place.geometry.location;
+        var marker = new google.maps.Marker({
+          map: map,
+          position: place.geometry.location
+        });
+		
+		loadDoc(marker, place);
+      }
+
+      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+                              'Error: The Geolocation service failed.' :
+                              'Error: Your browser doesn\'t support geolocation.');
+        infoWindow.open(map);
+     }
+	  </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYEpFebQpUbBorbLsnIxUugIyuBtXy00A&libraries=places,geometry&callback=initMap"
+    async defer></script>
+	
+	<div id="mySidenav" class="sidenav">
+	<div id="navContent" calss="sidenav">
+		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+		<div id = "navName">
+		<h2 id="navHeader" name=""></h2>
+		</div>
+		<form action="" method="" >
+			<input type="checkbox" id="MensRoomExist">&nbsp;Mens Bathroom<br>
+			<input type="checkbox" id="MensH">&nbsp;Handicap Acessable<br>
+			Rating: <br><input type ="text" id="mensbathroomRating"><br>
+			Bathroom Code:<br> <input type = "text" id="mensbathroomCode"><br>
+			<br></br>
+			<input type="checkbox" id="WomensRoomExist">&nbsp;Womens Bathroom<br>
+			<input type="checkbox" id="WomensH">&nbsp;Handicap Acessable<br>
+			Rating: <br><input type ="text" id="womensbathroomRating"><br>
+			Bathroom Code:<br> <input type = "text" id="womensbathroomCode"><br>
+			<br></br>
+			<input type="checkbox" id="GNRoomExist">&nbsp;Gender Neutral Bathroom<br>
+			<input type="checkbox" id="gnH">&nbsp;Handicap Acessable<br>
+			Rating: <br><input type ="text" id="gnbathroomRating"><br>
+			Bathroom Code:<br> <input type = "text" id="gnbathroomCode"><br>
+			<br></br>
+		</form>
+		<button onclick="sendDoc(navHeader.name,MensRoomExist.checked, MensH.checked, mensbathroomRating.value,mensbathroomCode.value,WomensRoomExist.checked,WomensH.checked, womensbathroomRating.value,womensbathroomCode.value,GNRoomExist.checked,gnH.checked, gnbathroomRating.value,gnbathroomCode.value)">Submit</button>
+	</div>	
+	</div>
+	
+	<div id="mySidenav2" class="sidenav2">
+	<div id="navContent" calss="sidenav2">
+		<a href="javascript:void(0)" class="closebtn2" onclick="closeNav()">&times;</a>
+		<div id = "navName">
+		<h2 id="navHeader2" name=""></h2>
+		</div>
+		
+		<h3>Mens Ratings:</h3>
+		<p id ="navMR">Mens Ratings</p><br></br>
+		<h3>Mens Codes:</h3>
+		<p id="navMC">Mens Codes</p><br></br>
+		<h3>Womens Ratings:</h3>
+		<p id="navWR">Womens Ratings</p><br></br>
+		<h3>Womens Codes:</h3>
+		<p id="navWC">Womens Codes</p><br></br>
+		<h3>GenderNeutral Ratings:</h3>
+		<p id="navGR">GenderNeutral Ratings</p><br></br>
+		<h3>GenderNeutral Codes:</h3>
+		<p id="navGC">GenderNeutral Codes</p>
+		
+	</div>	
+	</div>
+
+  </body>
+  
+    <footer>
+      Created by David Flood
+    </footer>
+
+  </div>
+
+</body>
+
+</html>
