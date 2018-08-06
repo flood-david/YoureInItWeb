@@ -2,6 +2,7 @@
 <html>
 
 <head>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	<link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.css"/>
 	<link rel="stylesheet" href="seniorProj.css" />
 	<script src="seniorProjJS.js"></script>
@@ -36,6 +37,7 @@
             //position the map to users location
             map.setCenter(pos);
 			createMarkers(pos.lat, pos.lng);
+			createPosMarker(pos);
           }, function() {
             handleLocationError(true, infoWindow, map.getCenter());
 			
@@ -53,7 +55,7 @@
 		var service = new google.maps.places.PlacesService(map);
 			service.nearbySearch({
 			location: {lat, lng},
-			radius: 500,
+			radius: 1000,
 			type: ['store']
 			}, callback);
       }
@@ -66,6 +68,20 @@
           }
         }
       }
+	  function createPosMarker(pos){
+	  var contentString = '<p>Your Location</p>';
+	   var infowindow = new google.maps.InfoWindow({
+          content: contentString
+        });
+		var placeLoc = pos;
+        var marker = new google.maps.Marker({
+          map: map,
+          position: pos
+		  });
+		  marker.addListener('click', function() {
+          infowindow.open(map, marker);
+        });
+	  }
 
 	  //create a marker used in callback
       function createMarker(place) {
@@ -119,23 +135,59 @@
 	
 	<div id="mySidenav2" class="sidenav2">
 	<div id="navContent" calss="sidenav2">
-		<a href="javascript:void(0)" class="closebtn2" onclick="closeNav()">&times;</a>
+		<a href="javascript:void(0)" class="closebtn2" onclick="closeNav2()">&times;</a>
 		<div id = "navName">
 		<h2 id="navHeader2" name=""></h2>
 		</div>
 		
 		<h3>Mens Ratings:</h3>
-		<p id ="navMR">Mens Ratings</p><br></br>
+		<table style="width:100%" id="navMR"class="infoTable">
+		<th>Rating</th>
+		<tbody>
+		
+		</tbody>
+		</table>
+		
 		<h3>Mens Codes:</h3>
-		<p id="navMC">Mens Codes</p><br></br>
+		<table style="width:100%" id="navMC"class="infoTable">
+		<th>Code</th>
+		<th>Votes</th>
+		<tbody>
+		
+		</tbody>
+		</table>
+		
 		<h3>Womens Ratings:</h3>
-		<p id="navWR">Womens Ratings</p><br></br>
+		<table style="width:100%" id="navWR"class="infoTable">
+		<th>Rating</th>
+		<tbody>
+		
+		</tbody>
+		</table>
+		
 		<h3>Womens Codes:</h3>
-		<p id="navWC">Womens Codes</p><br></br>
+		<table style="width:100%" id="navWC"class="infoTable">
+		<th>Code</th>
+		<th>Votes</th>
+		<tbody>
+		
+		</tbody>
+		</table>
 		<h3>GenderNeutral Ratings:</h3>
-		<p id="navGR">GenderNeutral Ratings</p><br></br>
+		<table style="width:100%" id="navGR"class="infoTable">
+		<th>Rating</th>
+		<tbody>
+		
+		</tbody>
+		</table>
 		<h3>GenderNeutral Codes:</h3>
-		<p id="navGC">GenderNeutral Codes</p>
+		<table style="width:100%" id="navGC" class="infoTable">
+		<th>Code</th>
+		<th>Votes</th>
+		<tbody>
+		
+		</tbody>
+		</table>
 		
 	</div>	
 	</div>
